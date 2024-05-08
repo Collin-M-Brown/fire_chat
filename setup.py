@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 
 def read_requirements():
-    with open('/home/navi/Repos/fire_chat/requirements.txt', 'r') as req:
+    with open(r'C:\Users\cbrow\crbw\Git\fire_chat\requirements.txt', 'r') as req:
         content = req.read()
         requirements = content.split('\n')
         requirements = [r.strip() for r in requirements if r.strip() and not r.startswith('#')]
