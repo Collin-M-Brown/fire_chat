@@ -1,0 +1,8 @@
+fire-llama/*
+dist/fire_chat-0.1.0-py3-none-any.whl
+dist/fire_chat-0.1.0.tar.gz
+src/fire_chat.egg-info/dependency_links.txt
+src/fire_chat.egg-info/PKG-INFO
+src/fire_chat.egg-info/requires.txt
+src/fire_chat.egg-info/SOURCES.txt
+src/fire_chat.egg-info/top_level.txt
