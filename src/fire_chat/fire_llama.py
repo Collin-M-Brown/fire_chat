@@ -17,24 +17,26 @@ class Parameters:
     presence_penalty: float
     n: int
     stream: bool
-    stop: list[str]
+    stop: set[str]
 
     def to_dict(self):
-        return vars(self)
+        param_dict = vars(self).copy()
+        param_dict['stop'] = list(self.stop)
+        return param_dict
 
 class fire_llama:
 
     def __init__(self, 
                 model: str = "accounts/fireworks/models/llama-v3-70b-instruct", 
                 max_tokens: int = 300, 
-                messages: list[dict[str, str]] = [],
+                messages: list[dict[str, str]] = None,
                 temperature: int = 0.6, 
                 top_p: float = 1.0, 
                 frequency_penalty: float = 1.0, 
                 presence_penalty: float = 0.0, 
                 n: int = 1, 
                 stream: bool = True, 
-                stop: list[str] = ["<|eot_id|>"],
+                stop: set[str] = None,
                 api_key: str = None,
                 prompt: dict = None):
         
@@ -44,7 +46,12 @@ class fire_llama:
             self.client = Fireworks(api_key=api_key).chat.completions
         else:
             logging.warning('No API key provided and arguments and no API key found in .env. You can still set one with set_api_key()')
-        
+            
+        if (messages is None):
+            messages = []
+        if stop is None:
+            stop = {"<|eot_id|>"}
+
         self.Params = Parameters()
         self.set_model(model)
         self.set_max_tokens(max_tokens)
@@ -56,7 +63,6 @@ class fire_llama:
         self.set_n(n)
         self.set_stream(stream)
         self.set_stop_tokens(stop)
-
         self.set_prompt(prompt)
 
     def set_api_key(self, api_key: str):
@@ -99,9 +105,14 @@ class fire_llama:
     def set_stream(self, stream: bool):
         self.Params.stream = stream
     
-    def set_stop_tokens(self, stop_tokens: list[str]):
+    def set_stop_tokens(self, stop_tokens):
+        if isinstance(stop_tokens, list):
+            stop_tokens = set(stop_tokens)
+        elif not isinstance(stop_tokens, set):
+            raise TypeError("stop_tokens must be a set or a list")
+
         self.Params.stop = stop_tokens
-        self.Params.stop.append("<|eot_id|>") 
+        self.Params.stop.add("<|eot_id|>")
 
     def add_message(self, message: dict[str, str]):
         # validate message is a dict with role and content keys
@@ -184,7 +195,6 @@ class fire_llama:
     # Generator that yields each sentence in the response
     # Appends response into global context
     def get_easy_response(self) -> Generator[str, None, None]:
-
         sentences = []
         parts = []
         current_sentence = ""
