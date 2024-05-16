@@ -170,11 +170,9 @@ class fire_llama:
                                 u"\U000024C2-\U0001F251"
                                 "]+", flags=re.UNICODE)
         content = emoji_pattern.sub(r'', content)
-
         return content
     
-
-    def get_streamed_response(self):
+    def get_raw_response(self):
         if not getattr(self, 'client', False):
             raise AttributeError("client was not initialized. Make sure set_api_key() was called")
 
@@ -183,14 +181,15 @@ class fire_llama:
             if chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
 
-    # Streamed response but delimited by vocal pauses for smoother audio generation. Automatically add response to memory.
-    def get_streamed_sentences(self) -> Generator[str, None, None]:
+    # Generator that yields each sentence in the response
+    # Appends response into global context
+    def get_easy_response(self) -> Generator[str, None, None]:
 
         sentences = []
         parts = []
         current_sentence = ""
         sentence_enders = '.?!:;,'
-        for chunk in self.get_streamed_response():
+        for chunk in self.get_raw_response():
             parts.append(chunk)
             if (any(punct in chunk for punct in sentence_enders)):
                 punct_index = next((i for i, x in enumerate(chunk) if x in sentence_enders), None) 
