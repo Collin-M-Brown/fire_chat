@@ -1,22 +1,18 @@
-<div style="background-color: black; padding: 10px;">
-
 # AI: Man's new best friend
 
 ![alt text](download.png)
 
 # Table of Contents: 
-- Overview
-- AI friend
-- STT
-- TTT
-- TTS
+- AI Friend
+- Basic Components
+    - STT
+    - TTT
+    - TTS
 - Addons
 
-# Overview
+# AI Friend
 In this guide I will be going over how to have a conversation with your AI. When I say conversation, I don't mean simply handling audio and text conversions; I mean having a realistic, human-like, fast-paced back-and-forth dialogue. 
 
-
-# AI friend
 The most basic "conversation" with an AI consists of a Q and A session. User speaks, AI responds, User speaks, AI responds... etc...
 
 But real conversations don't follow a linear pattern. Sometimes human's respond instantly; sometimes they take a while to think. They can interrupt your or zone out when you're speaking. You might bring up a topic A but they might be fixated on topic B. They can agree with you when you are wrong, and disagree when you are right.
@@ -53,10 +49,4 @@ export DEEPGRAM_API_KEY='G6p9Bz2Lw1Qk7R8Xv3Tj5Hs0P4R9Wn3Yc2F8D1Ka'
 # Speech-to-text
 There are a number of tools and API's that you can use to convert your speech to text but for this demonstration I will be using Deepgram API with their Nova model. They give you $200 starting credits for free. For personal use, this will last you a very... very long time.
 
-
-
-
-
 # Bringing your new friend to life
-
-</div>
