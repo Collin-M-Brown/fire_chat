@@ -7,3 +7,4 @@ src/fire_chat.egg-info/requires.txt
 src/fire_chat.egg-info/SOURCES.txt
 src/fire_chat.egg-info/top_level.txt
 lazy-env/*
+fire_chat.code-workspace
