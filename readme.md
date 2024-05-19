@@ -1,52 +1,60 @@
 <div style="background-color: #0F0F0F; padding: 10px;">
 
-<h1>Main Title</h1>
-<h2>Subtitle</h2>
-<h3>Subsection</h3>
-
-<h1>Man's New Best</h1>
+# Man's New Best
 <img src="./png/meme.png" alt="alt text" style="width:400px;height:auto;">
 
-## Table of Contents: 
-- Overview
-- Part 1: Basic voice chat
-    - Components
-    - Setup
-    - STT
-    - TTT
-    - TTS
-- Part 2: Bringing your character to life
-    - Common pitfalls
-    - Details
-    - Replacing OpenAI
-
 ## Overview
-In this guide we will go over how to make friends with your AI! First, let's get you set up with some simple tools so you can start voice chatting with your AI immediately. Afterwords we can dive into some of the nitty gritty details will bring them to life.
+<div style="white-space: pre-wrap;">In this guide we will go over how to make friends with AI! 
+First, I will go over how to build a simple voice chat bot. 
+Then, we can talk about how to add life to the AI.
+</div>
 
-## Components
-1. Text-to-text (TTT aka your large language model)
-2. Speech-to-text (STT)
-3. Text-to-speech (TTS) 
+## Table of Contents
+- [Part 1: Setup](#part-1)
+    - [Fireworks API key](#TTT-key)
+    - [Deepgram API key](#STT-key)
+    - [OpenAI API key](#TTS-key)
+- [Part 2: Building the Voice Chat](#part-2)
+    - [TTT](#TTT)
+    - [STT](#STT)
+    - [TTS](#TTS)
+- [Part 3: Adding Life to Your AI](#part-3)
+  - [Common Pitfalls](#common-pitfalls)
+  - [Details](#details)
+  - [Improvements](#improvements)
 
-You will also need a working microphone, speakers, python, and pip to follow along.
+<a id="part-1"></a><br>
 
-## Setup 
-Let's get the API keys out of the way. I know it seems like a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
+## Part 1: Setup
+You will need python and pip to follow along with the examples. You will also need an API key for each component; Text-to-Text (TTT), Speech-to-Text(STT), and Text-to-Speech(TTS).
+
+I know it seems like a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
 1. Fireworks API (TTT) https://fireworks.ai
 2. Deepgram API (STT) https://deepgram.com
-3. OpenAi API (TTS) https://openai.com 💩 (I will go over a local replacement later in the guide)
+3. OpenAi API (TTS) https://openai.com 💩
 
-### 1. DeepGram
-<img src="./png/image-0.png" alt="alt text" style="width:800px;height:auto;">
-<img src="./png/image.png" alt="alt text" style="width:400px;height:auto;">
+<a id="TTT-key"></a><br>
 
-### 2. Fireworks
+## Fireworks Key
 <img src="./png/image-2.png" alt="alt text" style="width:900px;height:auto;">
 <img src="./png/image-3.png" alt="alt text" style="width:900px;height:auto;">
 
-### 3. OpenAi 💩
-https://platform.openai.com/api-keys
+<a id="STT-key"></a><br>
 
+## DeepGram Key
+<img src="./png/image-0.png" alt="alt text" style="width:800px;height:auto;">
+<img src="./png/image.png" alt="alt text" style="width:400px;height:auto;">
+
+<a id="TTS-key"></a><br>
+## OpenAi 💩 Key
+https://platform.openai.com/api-keys
+<br>
+<br>
+<br>
+
+<a id="part-2"></a><br>
+
+# Part 2: Building the Voice Chat
 ### 1. Place your API keys in a .env file in your working directory
 Here are my keys as an example. Please DO NOT use them.
 ```
@@ -66,8 +74,9 @@ source ai-voice-chat/Scripts/activate # Windows
 ```bash
 pip install git+https://github.com/Collin-M-Brown/fire_chat.git
 ```
+<a id="TTT"></a><br>
 
-# Text-to-Text
+## Text-to-Text
 The LLM will be the main engine behind your new friend. As of the current date (May 2024), llama3 70b seems to be the most reasonable choice for active voice chatting. The base model has a nice "human-like" touch to it that it is hard to find in other models. Through fireworks, you can acheive fast inferences speeds of sub 400ms initial response times which will be nessisary for making the dialogue as response as possible.
 
 <br>
@@ -82,7 +91,9 @@ for sentence in chat.get_easy_response():
     print(sentence)
 ```
 
-# Speech-to-Text
+<a id="STT"></a><br>
+
+## Speech-to-Text
 Managing an audio stream can be somewhat tedius but we can knock it out in a second with a simple async queue setup.
 ```python
 from fire_chat import fire_llama, lazy_mic
@@ -127,7 +138,9 @@ except KeyboardInterrupt:
 2. Implement a minimum length before the AI responds. For an example, don't send the AI the user message unless at least n words have been spoken. Something like "I uh..." wont trigger the AI response. The downside is that you can respond with a simple "Yes" or "No" as you might want to with in a real conversation.
 3. Use AI to detect when you are finished speaking. This will give the most natural results but it can also add additional latency to the reply depending on how complex your solution is.
 
-# Text-to-Speech
+<a id="TTS"></a>
+
+## Text-to-Speech
 
 
 
@@ -138,3 +151,4 @@ But real conversations don't follow a linear pattern. Sometimes human's respond 
 
 An AI that always listens to you and returns consistant, factual, and respectful responses will be a useful addition to your toolbox; but could you really call it a friend?
 
+</div>
