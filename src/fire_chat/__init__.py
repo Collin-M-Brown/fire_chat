@@ -1,3 +1,3 @@
 from .fire_llama import fire_llama
-from .lazy_stt import lazy_stt
-from .lazy_tts import lazy_tts
+from .easy_stt import easy_stt
+from .easy_tts import easy_tts

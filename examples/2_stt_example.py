@@ -1,4 +1,4 @@
-from fire_chat import fire_llama, lazy_stt
+from fire_chat import fire_llama, easy_stt
 import asyncio
 
 chat = fire_llama()
@@ -6,7 +6,7 @@ chat.set_prompt("You are an evil AI who hates all humans! Each response should b
 chat.set_max_tokens(100)
 
 output_queue = asyncio.Queue()
-mic = lazy_stt(output_queue=output_queue, choose_microphone=True)
+mic = easy_stt(output_queue=output_queue, choose_microphone=True)
 mic.start()
 
 try:
