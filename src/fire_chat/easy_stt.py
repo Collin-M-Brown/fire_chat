@@ -8,7 +8,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class easy_stt:
-    def __init__(self, output_queue: asyncio.Queue, key: str = None, model: str = "nova-2", host: str = "wss://api.deepgram.com", sample_rate: int = 16000, choose_microphone: bool = False):
+    def __init__(self, 
+                 output_queue: asyncio.Queue, 
+                 key: str = None, 
+                 model: str = "nova-2", 
+                 host: str = "wss://api.deepgram.com", 
+                 sample_rate: int = 16000, 
+                 choose_microphone: bool = False,
+                 activation_words: list[str] = None):
         if key is None:
             key = os.environ.get('DEEPGRAM_API_KEY')
         if key is None:
@@ -23,6 +30,10 @@ class easy_stt:
         self.running = False
         self.loop = asyncio.get_event_loop()
         self.choose_microphone = choose_microphone  
+        self.activation_words = activation_words
+    
+    def set_activation_words(self, activation_words: list[str] = None):
+        self.activation_words = activation_words
 
     def mic_callback(self, input_data, frame_count, time_info, status_flag):
         self.audio_queue.put_nowait(input_data)
@@ -41,9 +52,9 @@ class easy_stt:
         async with websockets.connect(
             deepgram_url, extra_headers={"Authorization": "Token {}".format(self.key)}
         ) as ws:
-            print(f'ℹ️  Request ID: {ws.response_headers.get("dg-request-id")}')
+            print(f'Request ID: {ws.response_headers.get("dg-request-id")}')
             if self.model:
-                print(f'ℹ️  Model: {self.model}')
+                print(f'Model: {self.model}')
 
             async def sender(ws):
                 try:
@@ -64,7 +75,8 @@ class easy_stt:
                         if res.get("speech_final") or res.get("is_final"):
                             if self.output_queue is not None:
                                 if (transcript != ""):
-                                    await self.output_queue.put(transcript)
+                                    if (self.activation_words == None) or any(ss in transcript for ss in self.activation_words):
+                                        await self.output_queue.put(transcript)
 
             async def microphone():
                 audio = pyaudio.PyAudio()
