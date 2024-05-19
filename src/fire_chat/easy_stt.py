@@ -28,7 +28,11 @@ class easy_stt:
         self.audio_queue = asyncio.Queue()
         self.output_queue = output_queue
         self.running = False
-        self.loop = asyncio.get_event_loop()
+        try:
+            self.loop = asyncio.get_running_loop()
+        except RuntimeError:
+            self.loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self.loop)
         self.choose_microphone = choose_microphone  
         self.activation_words = activation_words
     
