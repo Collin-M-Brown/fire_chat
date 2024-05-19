@@ -10,19 +10,18 @@ load_dotenv()
 class easy_stt:
     def __init__(self, 
                  output_queue: asyncio.Queue, 
-                 key: str = None, 
+                 api_key: str = None, 
                  model: str = "nova-2", 
-                 host: str = "wss://api.deepgram.com", 
                  sample_rate: int = 16000, 
                  choose_microphone: bool = False,
                  activation_words: list[str] = None):
-        if key is None:
-            key = os.environ.get('DEEPGRAM_API_KEY')
-        if key is None:
+        if api_key is None:
+            api_key = os.environ.get('DEEPGRAM_API_KEY')
+        if api_key is None:
             raise ValueError("No API key provided and no API key found in .env")
-        self.key = key
+        self.api_key = api_key
         self.model = model
-        self.host = host
+        self.host = "wss://api.deepgram.com"
         self.sample_rate = sample_rate
         self.chunk_size = int(sample_rate / 10)
         self.audio_queue = asyncio.Queue()
@@ -54,7 +53,7 @@ class easy_stt:
         deepgram_url += "&filler_words=true"
 
         async with websockets.connect(
-            deepgram_url, extra_headers={"Authorization": "Token {}".format(self.key)}
+            deepgram_url, extra_headers={"Authorization": "Token {}".format(self.api_key)}
         ) as ws:
             print(f'Request ID: {ws.response_headers.get("dg-request-id")}')
             if self.model:
