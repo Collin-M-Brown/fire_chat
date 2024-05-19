@@ -7,17 +7,23 @@ from openai import OpenAI
 import os
 import logging
 from dotenv import load_dotenv
+
 load_dotenv()
 
 class easy_tts:
     def __init__(self, api_key=None):
+        if api_key is None:
+            api_key = os.environ.get('OPENAI_API_KEY')
+        if api_key is None:
+            raise ValueError("No API key provided and no API key found in .env")
         self.client = OpenAI(api_key=api_key)
+        self.mixer_initialized = False
         
         try:
             pygame.mixer.init()
+            self.mixer_initialized = True
         except Exception as e:
             logging.error(f"Pygame mixer initialization failed: {e}")
-            raise
         
         self.text_queue = Queue()
         self.audio_queue = Queue()
@@ -45,10 +51,13 @@ class easy_tts:
             try:
                 audio_io, text = self.audio_queue.get(timeout=1)
                 with self.lock:
-                    pygame.mixer.music.load(audio_io)
-                    pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy() and not self.stop_event.is_set():
-                    time.sleep(0.1)
+                    if self.mixer_initialized:
+                        pygame.mixer.music.load(audio_io)
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy() and not self.stop_event.is_set():
+                            time.sleep(0.1)
+                    else:
+                        logging.error("Mixer not initialized, cannot play audio.")
             except Empty:
                 continue
             except Exception as e:
@@ -58,10 +67,11 @@ class easy_tts:
     def _reset_pygame_mixer(self):
         with self.lock:
             try:
-                pygame.mixer.music.stop()
-                pygame.mixer.music.unload()
-                pygame.mixer.quit()
-                pygame.mixer.init()
+                if self.mixer_initialized:
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.unload()
+                    pygame.mixer.quit()
+                    self.mixer_initialized = False
             except Exception as e:
                 logging.error(f"Error resetting pygame mixer: {e}")
 
@@ -76,20 +86,39 @@ class easy_tts:
         return audio_io
 
     def speak(self, text, voice='nova'):
-        self.text_queue.put((text, voice))
+        if self.mixer_initialized:
+            self.text_queue.put((text, voice))
+        else:
+            logging.error("Mixer not initialized, cannot enqueue text.")
 
     def stop(self):
         self.stop_event.set()
+        with self.lock:
+            if self.mixer_initialized:
+                pygame.mixer.music.stop()  # Force stop the audio playback
+                pygame.mixer.quit()
+                self.mixer_initialized = False
         self.play_thread.join(timeout=5)
         self.write_thread.join(timeout=5)
-        with self.lock:
-            pygame.mixer.quit()
 
     def cleanup(self):
         self.stop()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.cleanup()
 
     def __del__(self):
         try:
             self.cleanup()
         except Exception as e:
             logging.error(f"Error during cleanup: {e}")
+        print("Cleaned up easy_tts")
+
+# Example usage
+if __name__ == "__main__":
+    with easy_tts() as speakers:
+        speakers.speak("Hello, world!")
+        time.sleep(5) 

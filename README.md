@@ -100,49 +100,14 @@ from fire_chat import fire_llama, easy_stt
 import asyncio
 
 output_queue = asyncio.Queue()
-mic = easy_stt(output_queue=output_queue, choose_microphone=True)
+mic = easy_stt(output_queue=output_queue)
 mic.start()
 ```
-
-<br>Now we can combine parts 1 and 2 to talk directly to our AI.
-
-```python
-from fire_chat import fire_llama, easy_stt
-import asyncio
-
-chat = fire_llama()
-chat.set_prompt("You are an evil AI who hates all humans! Each response should be between two to three sentences.")
-chat.set_max_tokens(150)
-
-output_queue = asyncio.Queue()
-mic = easy_stt(output_queue=output_queue, choose_microphone=True)
-mic.start()
-
-try:
-    while True:
-        if not output_queue.empty():
-            transcript = output_queue.get_nowait()
-            chat.add_user_message(transcript)
-            print(f"User: {transcript}")
-            response = []
-            for sentence in chat.get_easy_response():
-                response.append(sentence)
-            print(f"AI: {''.join(response)}")
-except KeyboardInterrupt:
-    mic.stop()
-    print("Interrupted by user. Stopping...")
-```
-
-<br> If you want the AI to respond to everything you say, this will work. But it can be rather annoying to have it go off when you don't intend it to. There are many solutions, here are a few
-1. Implement keyword trigger. Only send user message to the AI after a specific word has been mentioned. This way the user will have control over when the AI responds. The issue is this will be less of a conversation and more of a QA
-2. Implement a minimum length before the AI responds. For an example, don't send the AI the user message unless at least n words have been spoken. Something like "I uh..." wont trigger the AI response. The downside is that you can respond with a simple "Yes" or "No" as you might want to with in a real conversation.
-3. Use AI to detect when you are finished speaking. This will give the most natural results but it can also add additional latency to the reply depending on how complex your solution is.
-
-<a id="TTS"></a>
+<a id="TTS"></a><br>
 
 ## Text-to-Speech
 
-
+Text to speech is the hardest part. The easy_tts module uses OpenAI tts for simplicity. But I will include some alternative that can provide faster and higher quality outputs later in this guide.
 
 # Bringing your new friend to life
 The most basic "conversation" with an AI consists of a Q and A session. User speaks, AI responds, User speaks, AI responds... etc...
@@ -152,3 +117,8 @@ But real conversations don't follow a linear pattern. Sometimes human's respond 
 An AI that always listens to you and returns consistant, factual, and respectful responses will be a useful addition to your toolbox; but could you really call it a friend?
 
 </div>
+
+<br> If you want the AI to respond to everything you say, this will work. But it can be rather annoying to have it go off when you don't intend it to. There are many solutions, here are a few
+1. Implement keyword trigger. Only send user message to the AI after a specific word has been mentioned. This way the user will have control over when the AI responds. The issue is this will be less of a conversation and more of a QA
+2. Implement a minimum length before the AI responds. For an example, don't send the AI the user message unless at least n words have been spoken. Something like "I uh..." wont trigger the AI response. The downside is that you can respond with a simple "Yes" or "No" as you might want to with in a real conversation.
+3. Use AI to detect when you are finished speaking. This will give the most natural results but it can also add additional latency to the reply depending on how complex your solution is.
