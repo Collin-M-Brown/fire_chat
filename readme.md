@@ -1,8 +1,13 @@
-# AI: Man's new best friend
+<div style="background-color: #0F0F0F; padding: 10px;">
 
-![alt text](./Guide/download.png)
+<h1>Main Title</h1>
+<h2>Subtitle</h2>
+<h3>Subsection</h3>
 
-# Table of Contents: 
+<h1>Man's New Best</h1>
+<img src="./png/meme.png" alt="alt text" style="width:400px;height:auto;">
+
+## Table of Contents: 
 - Overview
 - Part 1: Basic voice chat
     - Components
@@ -15,29 +20,29 @@
     - Details
     - Replacing OpenAI
 
-# Overview
+## Overview
 In this guide we will go over how to make friends with your AI! First, let's get you set up with some simple tools so you can start voice chatting with your AI immediately. Afterwords we can dive into some of the nitty gritty details will bring them to life.
 
-# Components
+## Components
 1. Text-to-text (TTT aka your large language model)
 2. Speech-to-text (STT)
 3. Text-to-speech (TTS) 
 
 You will also need a working microphone, speakers, python, and pip to follow along.
 
-# Setup 
+## Setup 
 Let's get the API keys out of the way. I know it seems like a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
 1. Fireworks API (TTT) https://fireworks.ai
 2. Deepgram API (STT) https://deepgram.com
 3. OpenAi API (TTS) https://openai.com 💩 (I will go over a local replacement later in the guide)
 
 ### 1. DeepGram
-<img src="./Guide/image-0.png" alt="alt text" style="width:800px;height:auto;">
-<img src="./Guide/image.png" alt="alt text" style="width:400px;height:auto;">
+<img src="./png/image-0.png" alt="alt text" style="width:800px;height:auto;">
+<img src="./png/image.png" alt="alt text" style="width:400px;height:auto;">
 
 ### 2. Fireworks
-<img src="./Guide/image-2.png" alt="alt text" style="width:900px;height:auto;">
-<img src="./Guide/image-3.png" alt="alt text" style="width:900px;height:auto;">
+<img src="./png/image-2.png" alt="alt text" style="width:900px;height:auto;">
+<img src="./png/image-3.png" alt="alt text" style="width:900px;height:auto;">
 
 ### 3. OpenAi 💩
 https://platform.openai.com/api-keys
