@@ -5,9 +5,8 @@ import time
 from queue import Queue, Empty
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
 import logging
-
+from dotenv import load_dotenv
 load_dotenv()
 
 class easy_tts:
@@ -48,7 +47,7 @@ class easy_tts:
                 with self.lock:
                     pygame.mixer.music.load(audio_io)
                     pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy():
+                while pygame.mixer.music.get_busy() and not self.stop_event.is_set():
                     time.sleep(0.1)
             except Empty:
                 continue
@@ -58,10 +57,13 @@ class easy_tts:
 
     def _reset_pygame_mixer(self):
         with self.lock:
-            pygame.mixer.music.stop()
-            pygame.mixer.music.unload()
-            pygame.mixer.quit()
-            pygame.mixer.init()
+            try:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.unload()
+                pygame.mixer.quit()
+                pygame.mixer.init()
+            except Exception as e:
+                logging.error(f"Error resetting pygame mixer: {e}")
 
     def _openai_tts(self, text, voice):
         response = self.client.audio.speech.create(
@@ -80,7 +82,8 @@ class easy_tts:
         self.stop_event.set()
         self.play_thread.join(timeout=5)
         self.write_thread.join(timeout=5)
-        pygame.mixer.quit()
+        with self.lock:
+            pygame.mixer.quit()
 
     def cleanup(self):
         self.stop()

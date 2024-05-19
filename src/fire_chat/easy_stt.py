@@ -39,11 +39,11 @@ class easy_stt:
     def set_activation_words(self, activation_words: list[str] = None):
         self.activation_words = activation_words
 
-    def mic_callback(self, input_data, frame_count, time_info, status_flag):
+    def _mic_callback(self, input_data, frame_count, time_info, status_flag):
         self.audio_queue.put_nowait(input_data)
         return (input_data, pyaudio.paContinue)
 
-    async def run(self):
+    async def _run(self):
         deepgram_url = f'{self.host}/v1/listen?punctuate=true'
 
         if self.model:
@@ -60,7 +60,7 @@ class easy_stt:
             if self.model:
                 print(f'Model: {self.model}')
 
-            async def sender(ws):
+            async def _sender(ws):
                 try:
                     while self.running:
                         mic_data = await self.audio_queue.get()
@@ -71,7 +71,7 @@ class easy_stt:
                     print(f"Error while sending: {str(e)}")
                     raise
 
-            async def receiver(ws):
+            async def _receiver(ws):
                 async for msg in ws:
                     res = json.loads(msg)
                     if res.get('type') == 'Results':
@@ -82,7 +82,7 @@ class easy_stt:
                                     if (self.activation_words == None) or any(ss in transcript for ss in self.activation_words):
                                         await self.output_queue.put(transcript)
 
-            async def microphone():
+            async def _microphone():
                 audio = pyaudio.PyAudio()
                 default_input_device_info = audio.get_default_input_device_info()
                 print(f"Default input device: {default_input_device_info['name']}")
@@ -103,7 +103,7 @@ class easy_stt:
                     input=True,
                     frames_per_buffer=self.chunk_size,
                     input_device_index=selected_device_index,
-                    stream_callback=self.mic_callback,
+                    stream_callback=self._mic_callback,
                 )
                 print("🎤 Recording...")
                 stream.start_stream()
@@ -116,26 +116,26 @@ class easy_stt:
                 audio.terminate()
 
             functions = [
-                asyncio.ensure_future(sender(ws)),
-                asyncio.ensure_future(receiver(ws)),
-                asyncio.ensure_future(microphone()),
+                asyncio.ensure_future(_sender(ws)),
+                asyncio.ensure_future(_receiver(ws)),
+                asyncio.ensure_future(_microphone()),
             ]
             await asyncio.gather(*functions)
 
     def start(self):
         self.running = True
-        self.loop.run_in_executor(None, asyncio.run, self.run())
+        self.loop.run_in_executor(None, asyncio.run, self._run())
 
     def stop(self):
         self.running = False
 
-    async def wait_for_stop(self):
+    async def _wait_for_stop(self):
         while self.running:
             await asyncio.sleep(0.1)
 
     def __del__(self):
         self.stop()
-        self.loop.run_until_complete(self.wait_for_stop())
+        self.loop.run_until_complete(self._wait_for_stop())
 
 
 if __name__ == '__main__':
