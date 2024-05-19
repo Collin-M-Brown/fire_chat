@@ -96,18 +96,18 @@ for sentence in chat.get_easy_response():
 ## Speech-to-Text
 Managing an audio stream can be somewhat tedius but we can knock it out in a second with a simple async queue setup.
 ```python
-from fire_chat import fire_llama, lazy_mic
+from fire_chat import fire_llama, lazy_stt
 import asyncio
 
 output_queue = asyncio.Queue()
-mic = lazy_mic(output_queue=output_queue, choose_microphone=True)
+mic = lazy_stt(output_queue=output_queue, choose_microphone=True)
 mic.start()
 ```
 
 <br>Now we can combine parts 1 and 2 to talk directly to our AI.
 
 ```python
-from fire_chat import fire_llama, lazy_mic
+from fire_chat import fire_llama, lazy_stt
 import asyncio
 
 chat = fire_llama()
@@ -115,7 +115,7 @@ chat.set_prompt("You are an evil AI who hates all humans! Each response should b
 chat.set_max_tokens(150)
 
 output_queue = asyncio.Queue()
-mic = lazy_mic(output_queue=output_queue, choose_microphone=True)
+mic = lazy_stt(output_queue=output_queue, choose_microphone=True)
 mic.start()
 
 try:

@@ -7,7 +7,7 @@ import websockets
 from dotenv import load_dotenv
 load_dotenv()
 
-class lazy_mic:
+class lazy_stt:
     def __init__(self, output_queue: asyncio.Queue, key: str = None, model: str = "nova-2", host: str = "wss://api.deepgram.com", sample_rate: int = 16000, choose_microphone: bool = False):
         if key is None:
             key = os.environ.get('DEEPGRAM_API_KEY')
@@ -124,7 +124,7 @@ class lazy_mic:
 
 if __name__ == '__main__':
     output_queue = asyncio.Queue()
-    mic = lazy_mic(output_queue=output_queue, choose_microphone=True)
+    mic = lazy_stt(output_queue=output_queue, choose_microphone=True)
     mic.start()
 
     try:
