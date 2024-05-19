@@ -20,9 +20,8 @@ Then, we can talk about how to add life to the AI.
     - [TTS](#TTS)
     - [TTTSTTTTS](#TTTSTTTTS)
 - [Part 3: Bringing Your AI to Life](#part-3)
-  - [Common Pitfalls](#common-pitfalls)
-  - [Details](#details)
-  - [Improvements](#improvements)
+  - [Details](#details) TODO
+
 
 <a id="part-1"></a><br>
 
@@ -127,15 +126,19 @@ except KeyboardInterrupt:
 
 ## Text-to-Speech
 
-Text to speech is the hardest part. The easy_tts module uses OpenAI tts for simplicity. But I will include some alternative methods for faster inference later in this guide.
+Text to speech is the hardest part. The easy_tts module uses OpenAI tts for simplicity. But I will include some alternative methods for faster inference later in this guide. Notice how much cleaner it sounds when you only split text at pauses?
 ```python
 from fire_chat import easy_tts
 import time
 
 with easy_tts() as speakers:
-    while True:
-        speakers.speak("Hello, world!")
-        time.sleep(5)
+    speakers.speak("Hi")
+    speakers.speak("how")
+    speakers.speak("are")
+    speakers.speak("you?")
+    speakers.speak("Hi")
+    speakers.speak("how are you?")
+    time.sleep(7)
 ```
 <a id="TTTSTTTTS"></a><br>
 
@@ -177,6 +180,27 @@ The most basic "conversation" with an AI consists of a Q and A session. User spe
 
 But real conversations don't follow a linear pattern. Sometimes human's respond instantly; sometimes they take a while to think. They can interrupt your or zone out when you're speaking. You might bring up a topic A but they might be fixated on topic B. They can agree with you when you are wrong, and disagree when you are right.
 
-An AI that always listens to you and returns consistant, factual, and respectful responses will be a useful addition to your toolbox; but could you really call it a friend?
+An AI that always listens to you and returns constant, factual, and respectful responses will be a useful addition to your toolbox; but could you really call it a friend?
+
+# Todo
+Talk about...
+- Lowering latency
+    - Bottlenecks
+- Structure
+    - Microservice
+    - Multiprocess w/ IPC
+    - Threading
+- Dynamic personalities
+- Emotion handling
+- Dynamic response timers
+- Context pruning
+- Pruning text for audio
+    - utf-8
+    - sir-names
+- Prompting
+    - Avoiding fourth walling etc..
+- Avoiding common pitfalls
+    - Bad text
+- Vision
 
 </div>
