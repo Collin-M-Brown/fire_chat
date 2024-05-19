@@ -57,7 +57,6 @@ class easy_stt:
                     raise
 
             async def receiver(ws):
-                print(f'🟢 START.')
                 async for msg in ws:
                     res = json.loads(msg)
                     if res.get('type') == 'Results':
@@ -80,7 +79,7 @@ class easy_stt:
                         if device_info["maxInputChannels"] > 0:
                             print(f"Device {i}: {device_info['name']}")
                     selected_device_index = int(input("Enter the device number to use: "))
-
+        
                 stream = audio.open(
                     format=pyaudio.paInt16,
                     channels=1,
@@ -90,6 +89,7 @@ class easy_stt:
                     input_device_index=selected_device_index,
                     stream_callback=self.mic_callback,
                 )
+                print("🎤 Recording...")
                 stream.start_stream()
 
                 while self.running:
