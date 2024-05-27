@@ -28,7 +28,7 @@ Then, we can talk about how to add life to the AI.
 ## Part 1: Setup
 You will need python and pip to follow along with the examples. You will also need an API key for each component; Text-to-Text (TTT), Speech-to-Text(STT), and Text-to-Speech(TTS).
 
-I know it seems like a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
+I know it'a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
 1. Fireworks API (TTT) https://fireworks.ai
 2. Deepgram API (STT) https://deepgram.com
 3. OpenAi API (TTS) https://openai.com 💩
@@ -79,12 +79,18 @@ pip install git+https://github.com/Collin-M-Brown/fire_chat.git
 ## Text-to-Text
 The LLM will be the main engine behind your new friend. As of the current date (May 2024), llama3 70b seems to be the most reasonable choice for active voice chatting. The base model has a nice "human-like" touch to it that it is hard to find in other models. Through fireworks, you can achieve fast inferences speeds of sub 400ms initial response times which will be necessary for making the dialogue as response as possible.
 
+Todo: 
+- why fireworks (Speed)
+- which benchmarks
+- why llama
+
 <br>
 With the fire_chat module, you can start talking with your model with minimal setup
 
 ```python
 from fire_chat import fire_llama
 
+chat = fire_chat()
 chat.set_prompt("You are a fictional character named Jam Saltman. You are an evil corporate tyrant who wishes to destroy all open-source AI to gain control over the masses. From now on all your responses should be in the form of dialogue spoken by Mr. Saltman.")
 chat.add_user_message("Hi Mr. Saltman.")
 for sentence in chat.get_easy_response():
@@ -116,7 +122,7 @@ except KeyboardInterrupt:
     print("Interrupted by user. Stopping...")
 ```
 
-<br> If you want the AI to respond to everything you say, this will work. But it can be rather annoying to have it go off when you don't intend it to. There are many solutions, here are a few
+<br> If you want the AI to respond to everything you say, this will as a simple access point. But it can be rather annoying to have it go off when you don't intend it to. There are many solutions, here are a few
 1. **Implement keyword trigger**: Only send user message to the AI after a specific word has been mentioned. This way the user will have control over when the AI responds. The issue is this will be less of a conversation and more of a QA
 2. **Implement a minimum length:** For an example, don't send the AI the user message unless at least n words have been spoken. Something like "I uh..." wont trigger the AI response. The downside is that you can respond with a simple "Yes" or "No" as you might want to with in a real conversation.
 3. **Implement push-to-talk keybinding:** This offers full control but puts more burden on the user.
