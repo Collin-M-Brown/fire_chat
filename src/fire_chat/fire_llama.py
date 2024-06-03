@@ -45,7 +45,7 @@ class fire_llama:
         if api_key is not None:
             self.client = Fireworks(api_key=api_key).chat.completions
         else:
-            logging.warning('No API key provided and arguments and no API key found in .env. You can still set one with set_api_key()')
+            print('No API key provided and arguments and no API key found in .env. You can still set one with set_api_key()')
             
         if (messages is None):
             messages = []

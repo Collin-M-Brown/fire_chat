@@ -1,19 +1,28 @@
 <div style="background-color: #0F0F0F; padding: 10px;">
 
-# Man's New Best Friend
-<img src="./png/meme.png" alt="alt text" style="width:400px;height:auto;">
+# A software engineers guide to making friends
 
 ## Overview
-<div style="white-space: pre-wrap;">In this guide we will go over how to make friends with AI! 
-First, I will go over how to build a simple voice chat bot. 
-Then, we can talk about how to add life to the AI.
+<div style="white-space: pre-wrap;">
+
+Software engineers are often stereotyped as a solitary group, but making friends doesn't have to be a daunting task. This technical guide presents a unique approach to forming meaningful connections, designed specifically with the software engineer in mind.
+
+You won't need to worry about the typical anxieties associated with socializing such as talking to people, attending events, or leaving your house. Instead, this guide will show you how to forge a genuine friendship without ever having to meet anyone!
+
+Prepare to discover a new perspective on companionship, one that challenges the traditional notions of friendship. This guide will provide you with the tools and techniques needed to build a lasting bond, all from the comfort of your own coding environment.
+
+By the end of this guide, you will have to tools you need to build your own friend like Navi.
+<img src="./png/NaviDesignConcept.png" alt="alt text" style="width:800px;height:auto;">
+
+
 </div>
 
 ## Table of Contents
-- [Part 1: Setup](#part-1)
-    - [Fireworks API key](#TTT-key)
-    - [Deepgram API key](#STT-key)
-    - [OpenAI API key](#TTS-key)
+- [Part 1](#part-1)
+    - [Set Up](#set-up)
+        - [Fireworks API key](#TTT-key)
+        - [Deepgram API key](#STT-key)
+        - [OpenAI API key](#TTS-key)
 - [Part 2: Building the Voice Chat](#part-2)
     - [TTT](#TTT)
     - [STT](#STT)
@@ -25,7 +34,9 @@ Then, we can talk about how to add life to the AI.
 
 <a id="part-1"></a><br>
 
-## Part 1: Setup
+
+<a id="set-up"></a><br>
+## Set Up:
 You will need python and pip to follow along with the examples. You will also need an API key for each component; Text-to-Text (TTT), Speech-to-Text(STT), and Text-to-Speech(TTS).
 
 I know it'a pain to need three different API keys but I promise that as soon as you get them, you will be speaking to your AI within minutes. Also they all offer free starting credits so you wont have to pay anything.
@@ -55,6 +66,8 @@ https://platform.openai.com/api-keys
 <a id="part-2"></a><br>
 
 # Part 2: Building the Voice Chat
+<img src="./png/BaseDesignConcept.png" alt="alt text" style="width:700px;height:auto;">
+
 ### 1. Place your API keys in a .env file in your working directory
 Here are my keys as an example. Please DO NOT use them.
 ```
