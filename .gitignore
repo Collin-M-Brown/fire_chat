@@ -9,3 +9,11 @@ src/fire_chat.egg-info/top_level.txt
 lazy-env/*
 .env
 fire_chat.code-workspace
+build/lib/fire_chat/__init__.py
+build/lib/fire_chat/easy_stt.py
+build/lib/fire_chat/easy_tts.py
+build/lib/fire_chat/fire_llama.py
+src/fire_chat/__pycache__/__init__.cpython-310.pyc
+src/fire_chat/__pycache__/easy_stt.cpython-310.pyc
+src/fire_chat/__pycache__/easy_tts.cpython-310.pyc
+src/fire_chat/__pycache__/fire_llama.cpython-310.pyc

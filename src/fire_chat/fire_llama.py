@@ -45,7 +45,7 @@ class fire_llama:
         if api_key is not None:
             self.client = Fireworks(api_key=api_key).chat.completions
         else:
-            logging.warning('No API key provided and arguments and no API key found in .env. You can still set one with set_api_key()')
+            print('No API key provided and arguments and no API key found in .env. You can still set one with set_api_key()')
             
         if (messages is None):
             messages = []
@@ -63,7 +63,8 @@ class fire_llama:
         self.set_n(n)
         self.set_stream(stream)
         self.set_stop_tokens(stop)
-        self.set_prompt(prompt)
+        if prompt is not None:
+            self.set_prompt(prompt)
 
     def set_api_key(self, api_key: str):
         self.client = Fireworks(api_key=api_key).chat.completions
@@ -114,8 +115,9 @@ class fire_llama:
         self.Params.stop = stop_tokens
         self.Params.stop.add("<|eot_id|>")
 
-    def add_message(self, message: dict[str, str]):
+    def _add_message(self, message: dict[str, str]):
         # validate message is a dict with role and content keys
+        print(message)
         if not isinstance(message, dict):
             raise ValueError("Message must be a dictionary")
         if 'role' not in message:
@@ -141,10 +143,10 @@ class fire_llama:
         self.Params.messages.append(message)
 
     def add_user_message(self, message: str):
-        self.add_message({"role": "user", "content": message})
+        self._add_message({"role": "user", "content": message})
 
     def add_assistant_message(self, message: str):
-        self.add_message({"role": "assistant", "content": message})
+        self._add_message({"role": "assistant", "content": message})
 
     def clear_memory(self):
         self.Params.messages = []
@@ -158,8 +160,14 @@ class fire_llama:
     def get_context(self):
         return self.Params.messages
     
+    def get_user_message_length(self):
+        print(self.Params.messages)
+        if len(self.Params.messages) == 0 or self.Params.messages[0]['role'] != 'user':
+            return 0
+        return len(self.Params.messages[0]['content'])
+    
     # Cleanse content -- emojis, and multiple punctuation marks. Meant to clean the response for audio generation.
-    def process_content(self, content: str):
+    def _process_content(self, content: str):
         # Replace multiple punctuation marks with a single one
         content = re.sub(r'\.{2,}', '.', content)   # Replace multiple periods with one
         content = re.sub(r',{2,}', ',', content)    # Replace multiple commas with one
@@ -183,7 +191,7 @@ class fire_llama:
         content = emoji_pattern.sub(r'', content)
         return content
     
-    def get_raw_response(self):
+    def _get_raw_response(self):
         if not getattr(self, 'client', False):
             raise AttributeError("client was not initialized. Make sure set_api_key() was called")
 
@@ -199,7 +207,7 @@ class fire_llama:
         parts = []
         current_sentence = ""
         sentence_enders = '.?!:;,'
-        for chunk in self.get_raw_response():
+        for chunk in self._get_raw_response():
             parts.append(chunk)
             if (any(punct in chunk for punct in sentence_enders)):
                 punct_index = next((i for i, x in enumerate(chunk) if x in sentence_enders), None) 
@@ -208,13 +216,13 @@ class fire_llama:
                     parts[-1] = chunk[:punct_index + 1]
                     leftover = chunk[punct_index + 1:]
                 current_sentence = ''.join(parts)
-                current_sentence = self.process_content(current_sentence)
+                current_sentence = self._process_content(current_sentence)
                 sentences.append(current_sentence.strip())
                 yield current_sentence
                 parts = [leftover] if leftover else []
         if parts:
             current_sentence = ''.join(parts)
-            current_sentence = self.process_content(current_sentence)
+            current_sentence = self._process_content(current_sentence)
             sentences.append(current_sentence.strip())
             yield current_sentence
         
