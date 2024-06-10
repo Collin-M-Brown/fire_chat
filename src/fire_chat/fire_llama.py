@@ -10,6 +10,7 @@ load_dotenv()
 class Parameters:
     model: str
     max_tokens: int
+    prompt: dict[str, str]
     messages: list[dict[str, str]]
     temperature: int
     top_p: float
@@ -18,10 +19,12 @@ class Parameters:
     n: int
     stream: bool
     stop: set[str]
-
     def to_dict(self):
         param_dict = vars(self).copy()
         param_dict['stop'] = list(self.stop)
+        prompt = param_dict.pop('prompt', None)
+        if prompt:
+            param_dict['messages'].insert(0, prompt)
         return param_dict
 
 class fire_llama:
@@ -38,7 +41,7 @@ class fire_llama:
                 stream: bool = True, 
                 stop: set[str] = None,
                 api_key: str = None,
-                prompt: dict = None):
+                prompt: str = None):
         
         if api_key is None:
             api_key = os.environ.get('FIREWORKS_API_KEY')
@@ -73,14 +76,7 @@ class fire_llama:
         self.Params.model = model
     
     def set_prompt(self, prompt: str):
-        if len(self.Params.messages) == 0:
-            self.Params.messages.append({'role': 'system', 'content': prompt})
-        else:
-            #if user, push front, if system, replace
-            if self.Params.messages[0]['role'] == 'user':
-                self.Params.messages.insert(0, {'role': 'system', 'content': prompt})
-            else:
-                self.Params.messages[0] = {'role': 'system', 'content': prompt}
+        self.Params.prompt = {'role': 'system', 'content': prompt}
     
     def set_max_tokens(self, max_tokens: int):
         self.Params.max_tokens = max_tokens
@@ -158,7 +154,7 @@ class fire_llama:
         self.Params.messages.pop()
     
     def get_context(self):
-        return self.Params.messages
+        return self.Params.prompt + self.Params.messages
     
     def get_user_message_length(self):
         print(self.Params.messages)
@@ -168,27 +164,7 @@ class fire_llama:
     
     # Cleanse content -- emojis, and multiple punctuation marks. Meant to clean the response for audio generation.
     def _process_content(self, content: str):
-        # Replace multiple punctuation marks with a single one
-        content = re.sub(r'\.{2,}', '.', content)   # Replace multiple periods with one
-        content = re.sub(r',{2,}', ',', content)    # Replace multiple commas with one
-        content = re.sub(r'\?{2,}', '?', content)   # Replace multiple question marks with one
-        content = re.sub(r'\!{2,}', '!', content)   # Replace multiple exclamation marks with
-
-        # Remove emojis
-        emoji_pattern = re.compile("["
-                                u"\U0001F600-\U0001F64F"  # emoticons
-                                u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-                                u"\U0001F680-\U0001F6FF"  # transport & map symbols
-                                u"\U0001F700-\U0001F77F"  # alchemical symbols
-                                u"\U0001F780-\U0001F7FF"  # Geometric Shapes Extended
-                                u"\U0001F800-\U0001F8FF"  # Supplemental Arrows-C
-                                u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
-                                u"\U0001FA00-\U0001FA6F"  # Chess Symbols
-                                u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
-                                u"\U00002702-\U000027B0"  # Dingbats
-                                u"\U000024C2-\U0001F251"
-                                "]+", flags=re.UNICODE)
-        content = emoji_pattern.sub(r'', content)
+        content = re.sub(r'[^\w\s.,;:?!\']', '', content.strip())
         return content
     
     def _get_raw_response(self):
@@ -217,13 +193,13 @@ class fire_llama:
                     leftover = chunk[punct_index + 1:]
                 current_sentence = ''.join(parts)
                 current_sentence = self._process_content(current_sentence)
-                sentences.append(current_sentence.strip())
+                sentences.append(current_sentence)
                 yield current_sentence
                 parts = [leftover] if leftover else []
         if parts:
             current_sentence = ''.join(parts)
             current_sentence = self._process_content(current_sentence)
-            sentences.append(current_sentence.strip())
+            sentences.append(current_sentence)
             yield current_sentence
         
         self.add_assistant_message(' '.join(sentences))
