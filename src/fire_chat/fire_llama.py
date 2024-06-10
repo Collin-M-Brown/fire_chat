@@ -151,10 +151,13 @@ class fire_llama:
         self.Params.prompt = {}
     
     def remove_last_message(self):
-        self.Params.messages.pop()
+        if self.Params.messages:
+            self.Params.messages.pop()
+        else:
+            print("No messages to remove.")
     
     def get_context(self):
-        return self.Params.prompt + self.Params.messages
+        return [self.Params.prompt] + self.Params.messages
     
     def get_user_message_length(self):
         print(self.Params.messages)
@@ -182,7 +185,7 @@ class fire_llama:
         sentences = []
         parts = []
         current_sentence = ""
-        sentence_enders = '.?!:;,'
+        sentence_enders = ".?!:;,"
         for chunk in self._get_raw_response():
             parts.append(chunk)
             if (any(punct in chunk for punct in sentence_enders)):
