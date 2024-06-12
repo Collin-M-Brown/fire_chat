@@ -136,17 +136,18 @@ class easy_stt:
         self.stop()
         self.loop.run_until_complete(self._wait_for_stop())
 
-
-if __name__ == '__main__':
+async def main():
     output_queue = asyncio.Queue()
     mic = easy_stt(output_queue=output_queue, choose_microphone=True)
     mic.start()
 
     try:
         while True:
-            if not output_queue.empty():
-                transcript = output_queue.get_nowait()
-                print(transcript)
+            transcript = await output_queue.get()  # This will block until an item is available
+            print(transcript)
     except KeyboardInterrupt:
         mic.stop()
         print("Interrupted by user. Stopping...")
+
+if __name__ == '__main__':
+    asyncio.run(main())
