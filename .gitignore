@@ -17,3 +17,4 @@ src/fire_chat/__pycache__/__init__.cpython-310.pyc
 src/fire_chat/__pycache__/easy_stt.cpython-310.pyc
 src/fire_chat/__pycache__/easy_tts.cpython-310.pyc
 src/fire_chat/__pycache__/fire_llama.cpython-310.pyc
+examples/easy-env/*

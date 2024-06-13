@@ -12,28 +12,29 @@
 <div style="width: 40%;">
 
 ### Table of Contents
+
 - [Overview](#overview)
 - [Set-Up](#set-up)
 - [The Brain (LLM)](#TTT)
-    - [Fireworks API key](#TTT-key)
-    - [Easy Chat](#TTT-module)
+  * [Fireworks API key](#TTT-key)
+  * [Easy Chat](#TTT-module)
 - [The Ears](#STT)
-    - [Deepgram API key](#STT-key)
-    - [Easy STT](#STT-module)
+  * [Deepgram API key](#STT-key)
+  * [Easy STT](#STT-module)
 - [The Mouth](#TTS)
-    - [OpenAI API key](#TTS-key)
-    - [Easy TTS](#TTS-module)
+  * [OpenAI API key](#TTS-key)
+  * [Easy TTS](#TTS-module)
 - [Building the Voice Chat](#part-2)
-    - [TTTSTTTTS](#TTTSTTTTS)
+  * [TTTSTTTTS](#TTTSTTTTS)
 - [Part 3: Bringing Your AI to Life](#part-3)
-  - [Details](#details) TODO
-</div>
-<div style="width: 50%;">
-
-<img src="./png/NaviDesignConcept.png" alt="alt text" style="width:600px;height:auto;">
+  * [Details](#details) TODO
 
 </div>
+<div style="width: 60%; text-align: center;">
+    <img src="./png/NaviDesignConcept.png" alt="alt text" style="width:600px;height:auto;">
 </div>
+</div>
+
 
 
 
@@ -77,8 +78,7 @@ Create a fresh environment
 mkdir easy_chat
 cd easy_chat
 python -m venv easy-env
-source easy-env/bin/activate # Linux
-source easy-env/Scripts/activate # Windows
+source easy-env/bin/activate # Linux // Windows -> source easy-env/Scripts/activate # Windows
 touch .env
 touch easy_chat.py
 ```
