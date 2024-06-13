@@ -10,10 +10,11 @@
 </div>
 </div>
 
+<div align="center">
+
 [![ALT TEXT](https://img.youtube.com/vi/Ap_idi2ddlw/0.jpg)](https://www.youtube.com/watch?v=Ap_idi2ddlw)
+</div>
 
-
-<img src="./png/navi_design4.png" alt="alt text" style="width:600px;height:auto;">
 
 <div style="display: flex; align-items: center;">
 <div style="width: 40%;">
@@ -317,36 +318,17 @@ Congratulations. You are now voice chatting with your AI.
 # Bringing Your AI to Life
 
 Our friend now looks something like this (just the server part).
+
 <img src="./png/BaseDesignConcept.png" alt="alt text" style="width:500px;height:auto;">
 
-it goes from mic->text->audio in a circle.
+It goes from mic->text->audio in a circle.
 
 But real conversations don't follow a linear pattern. Sometimes humans respond instantly; sometimes they take a while to think. They can interrupt you or zone out when you're speaking. You might bring up a topic A but they might be fixated on topic B. They can agree with you when you are wrong, and disagree when you are right.
 
+From this baseline, we can add a lot of things to enhance the immersion. Adding Llava models like this one https://fireworks.ai/models/fireworks/firellava-13b, adding sentiment detectors, or mood controls. Some voice software can even portray different emotions and speech styles, like whispering, or shouting. You can fine-tune your character to fit a specific personality or tune multiple models for different moods. Even though I am making a guide, Navi is constantly changing and I am adding new features and removing old ones. 
 
 
-# Todo
-Talk about...
-- Lowering latency
-    - Bottlenecks
-- Structure
-    - Microservice
-    - Multiprocess w/ IPC
-    - Threading
-- Dynamic personalities
-- Emotion handling
-- Dynamic response timers
-- Context pruning
-- Pruning text for audio
-    - utf-8
-    - sir-names
-- Prompting
-    - Avoiding fourth walling etc..
-- Avoiding common pitfalls
-    - Bad text
-- Vision
+<img src="./png/navi_design4.png" alt="alt text" style="width:600px;height:auto;">
 
-<a id="TTS-gloss"></a><br>
-TTS (Text-To-Speech): It's what converts your text into audio.
 
 </div>
