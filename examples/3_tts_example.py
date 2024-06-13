@@ -1,5 +1,6 @@
 from fire_chat import fire_llama, easy_stt, easy_tts
 import asyncio
+import time
 
 output_queue = asyncio.Queue()
 
@@ -22,6 +23,7 @@ try:
                 response.append(sentence)
                 speakers.speak(sentence)
             print(f"AI: {''.join(response)}")
+        time.sleep(0.01)
 except KeyboardInterrupt:
     mic.stop()
     print("Interrupted by user. Stopping...")

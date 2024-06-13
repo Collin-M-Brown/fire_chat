@@ -1,17 +1,24 @@
-<!-- <div style="background-color: #0F0F0F; padding: 10px;"> -->
+<div style="background-color: #0F0F0F; padding: 10px;">
 
 <!-- <div align="center">
   <p style="text-align: center; text-decoration: none; font-size: 2em;">A software engineer's guide to making friends</p>
 </div> -->
 <div align="center">
   <h1 style="text-decoration: none;">A software engineer's guide to making friends</h1>
+<div style="width: 60%; text-align: center;">
+    <!-- <img src="https://www.youtube.com/watch?v=Ap_idi2ddlw" alt="alt text" style="width:600px;height:auto;"> -->
+</div>
 </div>
 
+[![ALT TEXT](https://img.youtube.com/vi/Ap_idi2ddlw/0.jpg)](https://www.youtube.com/watch?v=Ap_idi2ddlw)
+
+
+<img src="./png/navi_design4.png" alt="alt text" style="width:600px;height:auto;">
 
 <div style="display: flex; align-items: center;">
 <div style="width: 40%;">
 
-### Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Set-Up](#set-up)
@@ -29,9 +36,6 @@
 - [Part 3: Bringing Your AI to Life](#part-3)
   * [Details](#details) TODO
 
-</div>
-<div style="width: 60%; text-align: center;">
-    <img src="./png/NaviDesignConcept.png" alt="alt text" style="width:600px;height:auto;">
 </div>
 </div>
 
@@ -199,24 +203,32 @@ export DEEPGRAM_API_KEY='G6p9Bz2Lw1Qk7R8Xv3Tj5Hs0P4R9Wn3Yc2F8D1Ka'
 For real-time speech recognition, we need to be continuously streaming our mic output to the API. You could also implement chunking and voice activity detection if you are using an API that does not support streaming.
 
 ```python
-from fire_chat import easy_stt
+from fire_chat import fire_llama, easy_stt
 import asyncio
+import time
 
-async def main():
-    output_queue = asyncio.Queue()
-    mic = easy_stt(output_queue=output_queue, choose_microphone=True)
-    mic.start()
+chat = fire_llama()
+chat.set_prompt("You are an evil AI who hates all humans! Each response should be between two to three sentences.")
+chat.set_max_tokens(100)
 
-    try:
-        while True:
-            transcript = await output_queue.get()  # This will block until an item is available
-            print(transcript)
-    except KeyboardInterrupt:
-        mic.stop()
-        print("Interrupted by user. Stopping...")
+output_queue = asyncio.Queue()
+mic = easy_stt(output_queue=output_queue, choose_microphone=True)
+mic.start()
 
-if __name__ == '__main__':
-    asyncio.run(main())
+try:
+    while True:
+        if not output_queue.empty():
+            transcript = output_queue.get_nowait()
+            chat.add_user_message(transcript)
+            print(f"User: {transcript}")
+            response = []
+            for sentence in chat.get_easy_response():
+                response.append(sentence)
+            print(f"AI: {''.join(response)}")
+        time.sleep(0.001)
+except KeyboardInterrupt:
+    mic.stop()
+    print("Interrupted by user. Stopping...")
 ```
 
 <!-- ################################################################################################ -->
@@ -271,6 +283,7 @@ Just slap all three modules together and call it a day.
 ```python
 from fire_chat import fire_llama, easy_stt, easy_tts
 import asyncio
+import time
 
 output_queue = asyncio.Queue()
 chat = fire_llama()
@@ -291,6 +304,7 @@ try:
                     response.append(sentence)
                     speakers.speak(sentence)
                 print(f"AI: {''.join(response)}")
+            time.sleep(0.01)
 except KeyboardInterrupt:
     mic.stop()
     print("Interrupted by user. Stopping...")

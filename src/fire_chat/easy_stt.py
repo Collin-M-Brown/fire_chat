@@ -108,7 +108,7 @@ class easy_stt:
                 stream.start_stream()
 
                 while self.running:
-                    await asyncio.sleep(0.1)
+                    await asyncio.sleep(0.01)
 
                 stream.stop_stream()
                 stream.close()
@@ -130,7 +130,7 @@ class easy_stt:
 
     async def _wait_for_stop(self):
         while self.running:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.01)
 
     def __del__(self):
         self.stop()
