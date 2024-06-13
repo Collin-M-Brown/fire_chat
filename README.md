@@ -35,7 +35,6 @@
 - [Building the Voice Chat](#part-2)
   * [TTTSTTTTS](#TTTSTTTTS)
 - [Part 3: Bringing Your AI to Life](#part-3)
-  * [Details](#details) TODO
 
 </div>
 </div>
@@ -274,7 +273,7 @@ with easy_tts() as speakers:
 <!-- ################################################################################################ -->
 <a id="part-2"></a><br>
 
-# Part 2: Building the Voice Chat
+# Building the Voice Chat
 
 
 
