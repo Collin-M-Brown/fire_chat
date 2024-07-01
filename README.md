@@ -15,11 +15,13 @@
 [![ALT TEXT](https://img.youtube.com/vi/Ap_idi2ddlw/0.jpg)](https://www.youtube.com/watch?v=Ap_idi2ddlw)
 </div>
 
+<!-- 
+<div style="display: flex; align-items: center;"> -->
+<!-- <div style="width: 40%;"> -->
 
-<div style="display: flex; align-items: center;">
-<div style="width: 40%;">
 
-## Table of Contents
+<h1 align="center">Table of Content</h1>
+</br>
 
 - [Overview](#overview)
 - [Set-Up](#set-up)
@@ -37,31 +39,26 @@
 - [Part 3: Bringing Your AI to Life](#part-3)
 
 </div>
-</div>
+<!-- </div> -->
 
-
+<div style="background-color: #0F0F0F; padding: 10px;">
 
 <a id="overview"></a>
-<div style="text-align: center;"><h1>Overview</h1></div>
+<h1 align="center">Overview</h1>
 
 <!-- ## Overview -->
-Software engineers are often stereotyped as a solitary type, but making friends doesn't have to be a daunting task. This technical guide presents a unique approach to forming meaningful connections, designed specifically with the software engineer in mind.
+Software engineers are often stereotyped as a socially stunted type, but making friends doesn't have to be a daunting task. This technical guide presents a unique approach to forming meaningful connections, designed specifically with the software engineer in mind.
 
 You won't need to worry about the typical anxieties associated with talking to people, attending events, or leaving your house. Instead, I will show you how to forge genuine friendships without ever having to meet anyone!
 
-Prepare to discover a new perspective on companionship, one that challenges the traditional notions of friendship. This guide will provide you with the tools and techniques needed to build a lasting bond, all from the comfort of your environment.
-
-By the end of this guide, you will have to tools you need to build a friend like Navi.
-
+Prepare to discover a new perspective on companionship, one that challenges traditional notions. This guide will provide you with the tools and techniques needed to build a lasting bond, all from the comfort of your environment.
 <!-- </div> -->
 
 
 <!-- ################################TTT################################### -->
 
   <a id="set-up"></a><br>
-
-  <!-- ## Set-Up: -->
-  <div style="text-align: center;"><h1>Setting Up</h1></div>
+  <h1 align="center">Setting Up</h1>
 
   To start you will need Python, Pip, and some audio libraries. I have tested this guide on Linux, Windows, and Mac, but the guide will mainly focus on Linux; you might need to alter the commands a bit depending on your OS. 
 
@@ -108,7 +105,7 @@ By the end of this guide, you will have to tools you need to build a friend like
 
 <!-- ################################TTT################################### -->
   <a id="TTT"></a><br>
-  <div style="text-align: center;"><h1>The Brain</h1></div>
+  <h1 align="center">The Brain</h1>
 
   The LLM will be the brain for your new friend. Generally the larger the model the better. But there are some additional concerns when it comes to real-time speech.
 
@@ -407,12 +404,10 @@ By the end of this guide, you will have to tools you need to build a friend like
   
   </details>
 <!-- ###################################################################### -->
-</br></br></br>
 
 <!-- ################################STT################################### -->
   <a id="STT"></a>
-
-  <div style="text-align: center;"><h1>The Ears</h1></div>
+  <h1 align="center">The Ears</h1>
 
   Your speech recognition software will be the ears of your friend. This one is not as important since there are a ton of APIs out there. I have tried Azure STT, Google STT, and Deepgram STT. I built the modules around Deegpram since my trial for Google ran out. 
   
@@ -615,8 +610,7 @@ By the end of this guide, you will have to tools you need to build a friend like
 <!-- ################################TTS################################### -->
 
   <a id="TTS"></a>
-
-  <div style="text-align: center;"><h1>The Mouth</h1></div>
+  <h1 align="center">The Mouth</h1>
   Text-to-speech has given me the most trouble. Most of the API's are either too uncanncy or too expensive. For the sake of the guide, I will be using OpenAI's TTS model. If you want to use an open source model i'd recommoned either xtts_v2 or OpenVoice.
 
   <details>
