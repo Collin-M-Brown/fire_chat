@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[![ALT TEXT](https://img.youtube.com/vi/Ap_idi2ddlw/0.jpg)](https://www.youtube.com/watch?v=Ap_idi2ddlw)
+[![ALT TEXT](https://img.youtube.com/vi/O6oTwbE0kyU/0.jpg)](https://www.youtube.com/watch?v=O6oTwbE0kyU)
 </div>
 
 <!-- 
