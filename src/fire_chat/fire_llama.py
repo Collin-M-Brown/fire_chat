@@ -4,6 +4,7 @@ import re
 from typing import Generator
 from dotenv import load_dotenv
 import logging
+from copy import deepcopy
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
 load_dotenv()
 
@@ -19,9 +20,10 @@ class Parameters:
     n: int
     stream: bool
     stop: set[str]
+
     def to_dict(self):
-        param_dict = vars(self).copy()
-        param_dict['stop'] = list(self.stop)
+        param_dict = deepcopy(vars(self))
+        param_dict['stop'] = list(param_dict['stop'])
         prompt = param_dict.pop('prompt', None)
         if prompt:
             param_dict['messages'].insert(0, prompt)
